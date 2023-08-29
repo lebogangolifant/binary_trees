@@ -24,7 +24,7 @@ struct binary_tree_s
 
 typedef struct binary_tree_s binary_tree_t;
 
-/* Printing helper function */
+/* Helper Functions */
 void binary_tree_print(const binary_tree_t *);
 
 /* Function Prototypes */

@@ -31,5 +31,5 @@ int binary_tree_is_bst_recursive(const binary_tree_t *tree, int min, int max)
 
 int binary_tree_is_bst(const binary_tree_t *tree)
 {
-	return binary_tree_is_bst_recursive(tree, INT_MIN, INT_MAX);
+	return (binary_tree_is_bst_recursive(tree, INT_MIN, INT_MAX));
 }

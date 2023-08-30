@@ -1,37 +1,74 @@
 #include "binary_trees.h"
+#include "queue.h"
 
 /**
- * binary_tree_levelorder - Traverses a binary tree using level-order traversal
- * @tree: Pointer to the root node of the tree to traverse.
- * @func: Pointer to a function to call for each node.
+ * level_order_recursive - Recursively traverses the tree at a specific level
+ * @tree: Pointer to the current node being considered
+ * @func: Pointer to a function to call for each node's value
+ * @level: The level being traversed
+ * @target_level: The target level to stop the traversal
+ */
+
+void level_order_recursive(const binary_tree_t *tree, void (*func)(int),
+		int level, int target_level);
+
+/**
+ * binary_tree_levelorder - Goes through a binary tree
+ *                          using level-order traversal
+ * @tree: Pointer to the root node of the tree to traverse
+ * @func: Pointer to a function to call for each node's value
  */
 
 void binary_tree_levelorder(const binary_tree_t *tree, void (*func)(int))
 {
-	int front, rear;
-
 	if (tree == NULL || func == NULL)
 		return;
 
-	binary_tree_t *queue[1000];
+	int height = binary_tree_height(tree);
 
-	front = 0, rear = 0;
+	level_order_recursive(tree, func, 1, height + 1);
+}
 
-	queue[rear++] = (binary_tree_t *)tree;
+/**
+ * level_order_recursive - Recursively traverses the tree at a specific level
+ * @tree: Pointer to the current node being considered
+ * @func: Pointer to a function to call for each node's value
+ * @level: The level being traversed
+ * @target_level: The target level to stop the traversal
+ */
 
-	while (front < rear)
-	{
-		binary_tree_t *node = queue[front++];
+void level_order_recursive(const binary_tree_t *tree, void (*func)(int),
+		int level, int target_level)
+{
+	if (tree == NULL)
+		return;
 
-		if (node != NULL)
-		{
-			func(node->n);
+	if (level == target_level)
+		func(tree->n);
 
-			if (node->left != NULL)
-				queue[rear++] = node->left;
+	level_order_recursive(tree->left, func, level + 1, target_level);
+	level_order_recursive(tree->right, func, level + 1, target_level);
+}
 
-			if (node->right != NULL)
-				queue[rear++] = node->right;
-		}
-	}
+/**
+ * binary_tree_height - Measures the height of a binary tree.
+ * @tree: Pointer to the root node of the tree to measure.
+ *
+ * Return: Height of the tree, 0 if tree is NULL.
+ */
+
+size_t binary_tree_height(const binary_tree_t *tree)
+{
+	size_t left_height, right_height;
+
+	if (tree == NULL)
+		return (0);
+
+	if (tree->left == NULL && tree->right == NULL)
+		return (0);
+
+	left_height = binary_tree_height(tree->left);
+	right_height = binary_tree_height(tree->right);
+
+	return (1 + (left_height > right_height ? left_height : right_height));
 }

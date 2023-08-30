@@ -1,57 +1,53 @@
 #include "binary_trees.h"
 
 /**
- * binary_tree_size - Measures the size of a binary tree.
- * @tree: Pointer to the root node of the tree to measure.
- *
- * Return: Size of the tree, 0 if tree is NULL.
+ * _dequeue - Function that dequeues a node from the queue
+ * @front: Pointer to the front index of the queue
  */
 
-size_t binary_tree_size(const binary_tree_t *tree)
+void _dequeue(size_t *front)
 {
-	if (tree == NULL)
-		return (0);
-
-	return (1 + binary_tree_size(tree->left)
-			+ binary_tree_size(tree->right));
+	(*front)++;
 }
 
 /**
- * binary_tree_is_complete_recursive - Checks if a binary tree
- *                                     is complete (recursive helper).
- * @tree: Pointer to the root node of the tree to check.
- * @index: Current index of the node being checked.
- * @nodes_count: Total number of nodes in the tree.
- *
- * Return: 1 if the tree is complete, 0 if tree is not complete.
- */
-
-int binary_tree_is_complete_recursive(const binary_tree_t *tree, size_t index,
-		size_t nodes_count)
-{
-	if (tree == NULL)
-		return (1);
-
-	if (index >= nodes_count)
-		return (0);
-
-	return (binary_tree_is_complete_recursive(tree->left,
-				2 * index + 1, nodes_count) &&
-			binary_tree_is_complete_recursive
-			(tree->right, 2 * index + 2, nodes_count));
-}
-
-/**
- * binary_tree_is_complete - Checks if a binary tree is complete.
- * @tree: Pointer to the root node of the tree to check.
- *
- * Return: 1 if the tree is complete, 0 if tree is NULL or not complete.
+ * binary_tree_is_complete - Function that checks if a binary tree is complete
+ * @tree: Type pointer of node of the tree
+ * Return: 1 if is complete 0 if it is not
  */
 
 int binary_tree_is_complete(const binary_tree_t *tree)
 {
+	binary_tree_t *queue[1024];
+	size_t front = 0, rear = 0;
+	int flag = 0;
+
 	if (tree == NULL)
 		return (0);
-	return (binary_tree_is_complete_recursive
-			(tree, 0, binary_tree_size(tree)));
+
+	queue[rear++] = (binary_tree_t *)tree;
+
+	while (front < rear)
+	{
+		if (queue[front]->left != NULL)
+		{
+			if (flag == 1)
+				return (0);
+
+			queue[rear++] = queue[front]->left;
+		} else
+			flag = 1;
+
+		if (queue[front]->right != NULL)
+		{
+			if (flag == 1)
+				return (0);
+
+			queue[rear++] = queue[front]->right;
+		} else
+			flag = 1;
+
+		_dequeue(&front);
+	}
+	return (1);
 }

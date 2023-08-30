@@ -27,18 +27,25 @@ typedef struct binary_tree_s binary_tree_t;
 typedef struct binary_tree_s bst_t;
 typedef struct binary_tree_s avl_t;
 typedef struct binary_tree_s heap_t;
+typedef struct binary_tree_s heap_t;
 
 /**
- * struct levelorder_queue_s - Level order traversal queue.
- * @node: A node of a binary tree.
- * @next: The next node to traverse to in the binary tree.
+ * struct link_s - Linked list node to store binary tree nodes
+ *			at a certain level.
+ *
+ * @node: Pointer to a binary tree node.
+ * @n: Depth level of the node.
+ * @next: Pointer to the next linked list node.
  */
 
-typedef struct levelorder_queue_s
+struct link_s
 {
-	binary_tree_t *node;
-	struct levelorder_queue_s *next;
-} levelorder_queue_t;
+	const binary_tree_t *node;
+	size_t n;
+	struct link_s *next;
+};
+
+typedef struct link_s link_t;
 
 /* Helper Functions */
 void binary_tree_print(const binary_tree_t *);
@@ -66,5 +73,7 @@ binary_tree_t *binary_tree_uncle(binary_tree_t *node);
 binary_tree_t *binary_trees_ancestor(const binary_tree_t *first,
 		const binary_tree_t *second);
 void binary_tree_levelorder(const binary_tree_t *tree, void (*func)(int));
+void linked_node(link_t **head, const binary_tree_t *tree, size_t level);
+int binary_tree_is_complete(const binary_tree_t *tree);
 
 #endif /* BINARY_TREES_H */

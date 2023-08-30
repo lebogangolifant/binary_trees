@@ -34,13 +34,5 @@ binary_tree_t *binary_trees_ancestor(const binary_tree_t *first,
  */
 size_t binary_tree_depth(const binary_tree_t *tree)
 {
-    size_t depth;
-
-    for (depth = 0; tree != NULL && tree->parent != NULL; depth++)
-    {
-        tree = tree->parent;
-    }
-
-    return (depth);
+	return ((tree && tree->parent) ? 1 + binary_tree_depth(tree->parent) : 0);
 }
-
